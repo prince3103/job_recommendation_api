@@ -6,6 +6,7 @@
 pip install Flask
 pip install flask-restful
 pip install FLASK-SQLAlchemy
+pip install Flask-JWT
 ```
 
 ## Description
