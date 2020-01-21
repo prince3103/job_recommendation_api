@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -29,7 +30,7 @@ if __name__ == '__main__':
     db.init_app(app)
     
     @app.before_first_request
-	def create_tables():
-    	db.create_all()
+    def create_tables():
+        db.create_all()
 
     app.run(port=5000, debug=True)
