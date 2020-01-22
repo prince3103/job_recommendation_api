@@ -5,11 +5,11 @@ class UserModel(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80))
+    email_address = db.Column(db.String(80))
     password = db.Column(db.String(80))
 
-    def __init__(self, username, password):
-        self.username = username
+    def __init__(self, email_address, password):
+        self.email_address = email_address
         self.password = password
 
     def save_to_db(self):
@@ -17,8 +17,8 @@ class UserModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_username(cls, username):
-        return cls.query.filter_by(username=username).first()
+    def find_by_email_address(cls, email_address):
+        return cls.query.filter_by(email_address=email_address).first()
 
     @classmethod
     def find_by_id(cls, _id):
