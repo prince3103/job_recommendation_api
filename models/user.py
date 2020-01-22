@@ -7,10 +7,16 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email_address = db.Column(db.String(80))
     password = db.Column(db.String(80))
+    name = db.Column(db.String(80))
+    phone_number = db.Column(db.String(80))
+    zip_code = db.Column(db.String(80))
 
-    def __init__(self, email_address, password):
+    def __init__(self, email_address, password, name, phone_number, zip_code):
         self.email_address = email_address
         self.password = password
+        self.name = name
+        self.phone_number = phone_number
+        self.zip_code = zip_code
 
     def save_to_db(self):
         db.session.add(self)
