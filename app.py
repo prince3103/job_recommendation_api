@@ -5,13 +5,16 @@ from flask_jwt import JWT
 
 # from security import authenticate, identity
 from security import authenticate, identity as identity_function
-from resources.user import UserRegister
+from resources.user import UserRegister, UserCVUpload
+
+UPLOAD_FOLDER = "CV"
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.secret_key = 'jose'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 api = Api(app)
 
 # config JWT auth key name to be 'email' instead of default 'username'
@@ -24,10 +27,12 @@ jwt = JWT(app, authenticate, identity_function)
 def customized_response_handler(access_token, user):
     return jsonify({
                         'access_token': access_token.decode('utf-8'),
-                        'name': user.name
+                        'name': user.name,
+                        'email_address': user.email_address
                    })
 
 api.add_resource(UserRegister, '/register')
+api.add_resource(UserCVUpload, '/user_cv_upload')
 
 if __name__ == '__main__':
     from db import db
