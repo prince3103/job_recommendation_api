@@ -71,12 +71,16 @@ class UserCVUpload(Resource):
             filename = secure_filename(file.filename)
             file.save(os.path.join("CV", filename))
 
+
             data = UserCVUpload.parser.parse_args()
+            print(data['email_address'])
+
             if data['email_address']=="":
                 return {"message": "Email Address cannot be blank"}, 400
             user = UserModel.find_by_email_address(data['email_address'])
+            print(user.email_address)
             user.cv_path="CV/"+str(filename)
             user.save_to_db()
             return {'message' : 'File successfully uploaded'}, 201
-        # else:
-        #     return {'message' : 'Allowed file types are pdf, doc'}, 400
+                
+        return {'message' : 'Allowed file types are pdf, doc'}, 400
