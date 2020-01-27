@@ -69,17 +69,19 @@ class UserCVUpload(Resource):
             return {'message' : 'No file selected for uploading'}, 400
         if file and UserModel.allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join("CV", filename))
-
-
             data = UserCVUpload.parser.parse_args()
-            print(data['email_address'])
-
             if data['email_address']=="":
                 return {"message": "Email Address cannot be blank"}, 400
+            file.save(os.path.join("CV", data['email_address']+"."+filename))
+
+
+            
+            print(data['email_address'])
+
+            
             user = UserModel.find_by_email_address(data['email_address'])
             print(user.email_address)
-            user.cv_path="CV/"+str(filename)
+            user.cv_path="CV/"+data['email_address']+"."+str(filename)
             user.save_to_db()
             return {'message' : 'File successfully uploaded'}, 201
                 
