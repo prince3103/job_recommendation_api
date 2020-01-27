@@ -62,16 +62,22 @@ class UserCVUpload(Resource):
 
     @jwt_required()
     def put(self):
+        data = UserCVUpload.parser.parse_args()
+        print(data['email_address']) 
+        if data['email_address']=="":
+            print(data['email_address'])        
+            return {"message": "Email Address cannot be blank"}, 400
         if 'file' not in request.files:
+            print("'message' : 'No file part in the request'")  
             return {'message' : 'No file part in the request'}, 400
         file = request.files['file']
         if file.filename == '':
+            print("'message' : 'No file selected for uploading'}")  
             return {'message' : 'No file selected for uploading'}, 400
         if file and UserModel.allowed_file(file.filename):
+
             filename = secure_filename(file.filename)
-            data = UserCVUpload.parser.parse_args()
-            if data['email_address']=="":
-                return {"message": "Email Address cannot be blank"}, 400
+            
             file.save(os.path.join("CV", data['email_address']+"."+filename))
 
 
@@ -84,5 +90,5 @@ class UserCVUpload(Resource):
             user.cv_path="CV/"+data['email_address']+"."+str(filename)
             user.save_to_db()
             return {'message' : 'File successfully uploaded'}, 201
-                
+        print("{'message' : 'Allowed file types are pdf, doc'}") 
         return {'message' : 'Allowed file types are pdf, doc'}, 400
