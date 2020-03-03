@@ -1,4 +1,4 @@
-# Packaging Price Prediction API
+# Job Recommendation API
 
 ## Installation
 
